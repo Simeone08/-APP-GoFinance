@@ -5,6 +5,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
+import * as SplashScreen from 'expo-splash-screen';
 
 import { 
   useFonts,
@@ -15,38 +16,42 @@ import {
 
 import theme from './src/global/styles/theme';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { Routes } from './src/routes';
 import { AppRoutes } from './src/routes/app.routes';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { SignIn } from './src/screens/SignIn';
 
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider, useAuth } from './src/hooks/auth';
 
 
 export default function App() {
+  SplashScreen.preventAutoHideAsync();
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_700Bold
   });
 
-  if(!fontsLoaded){
-    return <AppLoading />
+  const { userStorageLoading } = useAuth();
+
+  if(!fontsLoaded || userStorageLoading){
+    return null;
   }
+
+  SplashScreen.hideAsync();
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <StatusBar style='light'/>
 
           <AuthProvider>
-            <SignIn />
+            <Routes />
           </AuthProvider>
 
         </GestureHandlerRootView>
-      </NavigationContainer>
+
     </ThemeProvider>  
   )
 }
