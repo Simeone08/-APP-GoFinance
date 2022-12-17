@@ -8,4 +8,4 @@
 
 ### Preview aplication video \o/
 
-![App Video]()
+[![App Video](https://img.youtube.com/vi/fxh9JvzsLO8/0.jpg)](https://www.youtube.com/watch?v=fxh9JvzsLO8)
